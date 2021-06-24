@@ -81,6 +81,14 @@ public class MainView {
   	public void setWatingStatus() {
   		for(Component c: this.searchPanel.getComponents()) c.setEnabled(true);
   	}
+  	
+  	public void throwErrorMessage(String title, String message) {
+  		JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
+  	}
+  	
+  	public void throwInfoMessage(String title, String message) {
+  		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+  	}
   
   	public String getTitleText( ) {
   		return textField1.getText();

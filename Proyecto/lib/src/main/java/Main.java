@@ -1,7 +1,7 @@
-import dyds.catalog.alpha.model.DatabaseImpl;
+import dyds.catalog.alpha.model.SQLDatabase;
 import dyds.catalog.alpha.model.VideogameSearcher;
 import dyds.catalog.alpha.model.WikipediaConnection;
-import dyds.catalog.alpha.model.Database;
+import dyds.catalog.alpha.model.Model;
 import dyds.catalog.alpha.presenter.LocalPresenter;
 import dyds.catalog.alpha.presenter.LocalPresenterImpl;
 import dyds.catalog.alpha.presenter.OnlinePresenter;
@@ -11,9 +11,9 @@ import dyds.catalog.alpha.view.MainView;
 public class Main {
 
   	public static void main(String[] args) {
-  		Database db = new DatabaseImpl();
+  		Model db = new SQLDatabase();
   		WikipediaConnection wc = new VideogameSearcher();
-  		Object [] currentArticles = db.getTitlesInAscendingOrder().stream().sorted().toArray();
+  		Object [] currentArticles = db.getTitlesInAscendingOrder().toArray();
   		
   		OnlinePresenter op = new OnlinePresenterImpl(db, wc);
   		LocalPresenter lp = new LocalPresenterImpl(db);

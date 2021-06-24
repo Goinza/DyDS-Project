@@ -2,7 +2,7 @@ package dyds.catalog.alpha.presenter;
 
 import java.util.ArrayList;
 
-import dyds.catalog.alpha.model.Database;
+import dyds.catalog.alpha.model.Model;
 import dyds.catalog.alpha.model.WikipediaArticle;
 import dyds.catalog.alpha.model.WikipediaConnection;
 import dyds.catalog.alpha.view.MainView;
@@ -12,11 +12,11 @@ public class OnlinePresenterImpl implements OnlinePresenter {
 	private String searchResultTitle = null;
 	private String searchResultExtract = null;
   	
-	private Database database;
+	private Model database;
   	private MainView view;
   	private WikipediaConnection wikiConnection;
   	
-  	public OnlinePresenterImpl(Database database, WikipediaConnection wikiConnection) {
+  	public OnlinePresenterImpl(Model database, WikipediaConnection wikiConnection) {
 	    this.database = database;
 	    this.wikiConnection = wikiConnection;
   	}
@@ -36,10 +36,10 @@ public class OnlinePresenterImpl implements OnlinePresenter {
 	              if (article != null) {
 		              searchResultTitle = article.getTitle();
 	                  searchResultExtract = article.getExtract();
-	                  setViewTitleText();  
+	                  setViewSearchResultText();  
 	              }
 	              else {
-	            	  //Throw error message in the view
+	            	  view.throwInfoMessage("Search result", "No results found");
 	              }
 	              view.setWatingStatus();	                           
 	            }
@@ -47,7 +47,7 @@ public class OnlinePresenterImpl implements OnlinePresenter {
 		}).start();
 	}
   	
-  	private void setViewTitleText() {
+  	private void setViewSearchResultText() {
   		String searchResultText;
   		searchResultText = "<h1>" + searchResultTitle + "</h1>";
     	searchResultText += searchResultExtract.replace("\\n", "\n");
@@ -59,8 +59,7 @@ public class OnlinePresenterImpl implements OnlinePresenter {
 	public void saveLastSearchedArticle() {		
 		boolean validText = searchResultExtract != "" && !searchResultExtract.equals("No Results");
 		if(validText){
-			String replacedTitle = searchResultTitle.replace("'", "`");
-			database.saveEntry(replacedTitle, searchResultExtract);
+			database.saveEntry(searchResultTitle, searchResultExtract);
 			ArrayList<String> titleList = database.getTitlesInAscendingOrder();
 			view.updateLocalArray(titleList.toArray());  
 		}

@@ -3,9 +3,9 @@ package dyds.catalog.alpha.model;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DatabaseImpl implements Database {
+public class SQLDatabase implements Model {
 
-	public DatabaseImpl() {
+	public SQLDatabase() {
 		createDatabase();
 	}     
         
@@ -69,11 +69,12 @@ public class DatabaseImpl implements Database {
     }
     
     public void saveEntry(String title, String extract) {
+    	String replacedTitle = title.replace("'", "`");
 	    try {
 	        Connection connection = createConnection();
             if (connection != null) {
             	Statement statement = createStatement(connection);
-            	statement.executeUpdate("replace into catalog values(null, '"+ title + "', '"+ extract + "', 1)");
+            	statement.executeUpdate("replace into catalog values(null, '"+ replacedTitle + "', '"+ extract + "', 1)");
             	connection.close();
             }  
 	    } catch(SQLException e) {
@@ -81,35 +82,43 @@ public class DatabaseImpl implements Database {
 	    }
     }    
 
-    public String getExtract(String title) {  
+    public String getExtract(String title) throws InvalidTitleException {  
 	    String extract = null;
 	    try {
 	    	Connection connection = createConnection();
             if (connection != null) {
             	Statement statement = createStatement(connection);
             	ResultSet rs = statement.executeQuery("select * from catalog WHERE title = '" + title + "'" );
-    	        rs.next();
-    	        extract = rs.getString("extract");     
+    	        if (rs.next()) {
+    	        	extract = rs.getString("extract");	
+    	        }
+    	        else {
+    	        	throw new InvalidTitleException("Invalid title: the entry does not exists");
+    	        }
     	        connection.close();
             }	          
 	    } catch(SQLException e) {
-		    System.err.println("Get title error " + e.getMessage());
+		    //Use listener?
 	    }
 	  
 	    return extract;
   	}
 
-    public void deleteEntry(String title) {
+    public void deleteEntry(String title) throws InvalidTitleException {
 	    try {
 	    	Connection connection = createConnection();
             if (connection != null) {
             	Statement statement = createStatement(connection);
-            	statement.executeUpdate("DELETE FROM catalog WHERE title = '" + title + "'" );
+            	int rowCount = statement.executeUpdate("DELETE FROM catalog WHERE title = '" + title + "'" );
+            	boolean deleteWorked = rowCount > 0;
+            	if (!deleteWorked) {
+            		throw new InvalidTitleException("Invalid title: the entry does not exists");
+            	}
             	connection.close();
-            }	    
+            }
 	    }
 	    catch(SQLException e) {
-	        System.err.println("Get title error " + e.getMessage());
+	    	//Use listener?
 	    }
     }   
 
