@@ -9,8 +9,7 @@ import dyds.catalog.alpha.view.MainView;
 
 public class OnlinePresenterImpl implements OnlinePresenter {
 	
-	private String searchResultTitle = null;
-	private String searchResultExtract = null;
+	private WikipediaArticle lastSearchedArticle = null;
   	
 	private Model database;
   	private MainView view;
@@ -32,36 +31,41 @@ public class OnlinePresenterImpl implements OnlinePresenter {
 	          @Override public void run() {
 	              view.setWorkingStatus();          
 	              String searchTerm = view.getTitleText();
-	              WikipediaArticle article = wikiConnection.getArticle(searchTerm);
-	              if (article != null) {
-		              searchResultTitle = article.getTitle();
-	                  searchResultExtract = article.getExtract();
+	              lastSearchedArticle = wikiConnection.searchArticle(searchTerm);
+	              if (lastSearchedArticle != null) {
 	                  setViewSearchResultText();  
 	              }
 	              else {
 	            	  view.throwInfoMessage("Search result", "No results found");
 	              }
-	              view.setWatingStatus();	                           
+	              view.setWatingStatus();
 	            }
 
 		}).start();
 	}
   	
   	private void setViewSearchResultText() {
+  		String title = lastSearchedArticle.getTitle();
+  		String extract = lastSearchedArticle.getExtract();
   		String searchResultText;
-  		searchResultText = "<h1>" + searchResultTitle + "</h1>";
-    	searchResultText += searchResultExtract.replace("\\n", "\n");
+  		searchResultText = "<h1>" + title + "</h1>";
+    	searchResultText += extract.replace("\\n", "\n");
     	searchResultText = MainView.textToHtml(searchResultText, view.getTitleText());
     	view.setExtractText(searchResultText);
   	}
 	
 	@Override
 	public void saveLastSearchedArticle() {		
-		boolean validText = searchResultExtract != "" && !searchResultExtract.equals("No Results");
-		if(validText){
-			database.saveEntry(searchResultTitle, searchResultExtract);
+		if(lastSearchedArticle != null){
+			String title = lastSearchedArticle.getTitle();
+			String extract = lastSearchedArticle.getExtract();
+			database.saveEntry(title, extract);
 			ArrayList<String> titleList = database.getTitlesInAscendingOrder();
 			view.updateLocalArray(titleList.toArray());  
+			view.throwInfoMessage("Save complete", "The article has been saved successfully");
+		}
+		else {
+			view.throwInfoMessage("Save error", "You need to search an article before saving!");
 		}
 	}
 			

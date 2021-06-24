@@ -18,6 +18,7 @@ public class VideogameSearcher implements WikipediaConnection {
 	
   	private WikipediaSearchAPI searchAPI;
   	private WikipediaPageAPI pageAPI;
+  	private WikipediaArticle lastSearchedArticle = null;
 	
 	public VideogameSearcher() {
 		Retrofit retrofit = new Retrofit.Builder()
@@ -30,16 +31,15 @@ public class VideogameSearcher implements WikipediaConnection {
 	}
 
 	@Override
-	public WikipediaArticle getArticle(String searchTerm) {
-		WikipediaArticle article = null;
+	public WikipediaArticle searchArticle(String searchTerm) {
 		JsonObject searchResult = getSearchResult(searchTerm);
 		if (searchResult != null) {
 			String title = getSearchTitle(searchResult);
 			String extract = getSearchExtract(searchResult);
-			article = new WikipediaArticle(title, extract);
+			lastSearchedArticle = new WikipediaArticle(title, extract);
 		}
 		
-		return article;
+		return lastSearchedArticle;
 	}
 	
 	private JsonObject getSearchResult(String searchTerm) {
@@ -62,7 +62,7 @@ public class VideogameSearcher implements WikipediaConnection {
 	        JsonArray resultArray = query.get("search").getAsJsonArray();
 	        resultIterator = resultArray.iterator();
 		} catch (IOException e1) { 
-      	  e1.printStackTrace();
+      	    e1.printStackTrace();
         }	
 		
 		return resultIterator;
@@ -94,6 +94,11 @@ public class VideogameSearcher implements WikipediaConnection {
 		}	
         
         return extract;
+	}
+
+	@Override
+	public WikipediaArticle getLastSearchedArticle() {
+		return lastSearchedArticle;
 	}
 
 }

@@ -1,7 +1,10 @@
 package dyds.catalog.alpha.view;
 
-import dyds.catalog.alpha.presenter.LocalPresenter;
+import dyds.catalog.alpha.presenter.DeleteLocallyPresenter;
 import dyds.catalog.alpha.presenter.OnlinePresenter;
+import dyds.catalog.alpha.presenter.SaveLocallyPresenter;
+import dyds.catalog.alpha.presenter.SearchPresenter;
+import dyds.catalog.alpha.presenter.SelectLocallyPresenter;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,10 +25,12 @@ public class MainView {
 	private JTextPane textPane2;
 	private JButton deleteButton;
 
-	OnlinePresenter onlinePresenter;
-	LocalPresenter localPresenter;
+	SearchPresenter searchPresenter;
+	SaveLocallyPresenter savePresenter;
+	SelectLocallyPresenter selectPresenter;
+	DeleteLocallyPresenter deletePresenter;
 
-  	public MainView(OnlinePresenter onlinePresenter, LocalPresenter localPresenter, Object[] titlesArray) {
+  	public MainView(SearchPresenter searchPresenter, SaveLocallyPresenter savePresenter, SelectLocallyPresenter selectPresenter, DeleteLocallyPresenter deletePresenter, Object[] titlesArray) {
 	  
   	  JFrame frame = new JFrame("Video Game Info Catalog");
   	  frame.setContentPane(contentPane);
@@ -33,8 +38,10 @@ public class MainView {
   	  frame.pack();
   	  frame.setVisible(true);
   		
-	  this.onlinePresenter = onlinePresenter;
-	  this.localPresenter = localPresenter;
+	  this.searchPresenter = searchPresenter;
+	  this.savePresenter = savePresenter;
+	  this.selectPresenter = selectPresenter;
+	  this.deletePresenter = deletePresenter;
 	  
 	  comboBox1.setModel(new DefaultComboBoxModel(titlesArray));
 	  textPane1.setContentType("text/html");
@@ -42,14 +49,14 @@ public class MainView {
 
 	  goButton.addActionListener(new ActionListener() {
 		  @Override public void actionPerformed(ActionEvent e) {    	  
-			  onlinePresenter.searchArticle();
+			  searchPresenter.searchArticle();
 		  }
 	  });
 
 	  saveLocallyButton.addActionListener(new ActionListener() {
 		  @Override
 		  public void actionPerformed(ActionEvent actionEvent) {
-			  onlinePresenter.saveLastSearchedArticle();
+			  savePresenter.saveLastSearchedArticle();
 		  }
 	  });
 
@@ -57,7 +64,7 @@ public class MainView {
 		  @Override
 		  public void actionPerformed(ActionEvent actionEvent) {
 			  if(comboBox1.getSelectedIndex() > -1) {
-				  localPresenter.selectEntry(comboBox1.getSelectedItem());
+				  selectPresenter.selectEntry(comboBox1.getSelectedItem().toString());
 			  }				  
 		  }
 	  });
@@ -66,7 +73,7 @@ public class MainView {
 		  @Override
 		  public void actionPerformed(ActionEvent actionEvent) {
 			  if(comboBox1.getSelectedIndex() > -1){
-				  localPresenter.deleteEntry(comboBox1.getSelectedItem());
+				  deletePresenter.deleteEntry(comboBox1.getSelectedItem().toString());
 			  }
 
 		  }

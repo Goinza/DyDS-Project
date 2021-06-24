@@ -120,6 +120,6 @@ public class SQLDatabase implements Model {
 	    catch(SQLException e) {
 	    	//Use listener?
 	    }
-    }   
+    }
 
 }

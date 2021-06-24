@@ -2,6 +2,8 @@ package dyds.catalog.alpha.model;
 
 public interface WikipediaConnection {
 		
-	public WikipediaArticle getArticle(String searchTerm);
+	public WikipediaArticle searchArticle(String searchTerm);
+	
+	public WikipediaArticle getLastSearchedArticle();
 
 }
