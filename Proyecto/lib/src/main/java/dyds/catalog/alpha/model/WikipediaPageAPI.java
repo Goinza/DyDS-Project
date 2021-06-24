@@ -1,4 +1,4 @@
-package dyds.catalog.alpha.fulllogic;
+package dyds.catalog.alpha.model;
 
 
 import retrofit2.Call;
