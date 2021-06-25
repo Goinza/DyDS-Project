@@ -44,6 +44,7 @@ public class LocalView {
 	    storagePanel.add(scrollPane2, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
 	    textPane = new JTextPane();
 	    textPane.setContentType("text/html");
+	    textPane.setEditable(false);
 	    scrollPane2.setViewportView(textPane);
 	    deleteButton = new JButton();
 	    deleteButton.setText("Delete!");

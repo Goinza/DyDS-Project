@@ -41,7 +41,6 @@ public class DeleteLocallyPresenterImpl implements DeleteLocallyPresenter {
 			ArrayList<String> titleList = model.getTitlesInAscendingOrder();
 			view.updateLocalArray(titleList.toArray());
 			view.setLocalExtractText("");
-			view.throwInfoMessage("Delete complete", "The article has been deleted successfully");
 		}
 		catch (InvalidTitleException e) {
 			view.throwErrorMessage("Error", e.getMessage());
