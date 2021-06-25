@@ -10,6 +10,13 @@ public interface Model {
 	
 	public String getExtract(String title) throws InvalidTitleException;
 	
-	public void deleteEntry(String title) throws InvalidTitleException;
-		
+	public void deleteEntry(String title) throws InvalidTitleException;		
+	
+	public void addSaveSuccessListener(SaveSuccessListener listener);
+	
+	public void addSaveFailureListener(SaveFailureListener listener);
+	
+	public void addDeleteSuccessListener(DeleteSuccessListener listener);
+	
+	public void addDeleteFailureListener(DeleteFailureListener listener);
 }

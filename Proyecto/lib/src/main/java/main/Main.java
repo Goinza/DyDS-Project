@@ -22,7 +22,6 @@ public class Main {
   	public static void main(String[] args) {
   		Model m = new SQLDatabase();
   		WikipediaConnection wc = new VideogameSearcher();
-  		Object [] currentArticles = m.getTitlesInAscendingOrder().toArray();
   		
   		SearchPresenter search = new SearchPresenterImpl(wc);
   		SaveLocallyPresenter save = new SaveLocallyPresenterImpl(m, wc);
@@ -35,7 +34,7 @@ public class Main {
   		search.setView(online);
   		save.setView(online);
   		
-  		LocalView local = new LocalView(window, select, delete, currentArticles);
+  		LocalView local = new LocalView(window, select, delete);
   		select.setView(local);
   		delete.setView(local);
   	}

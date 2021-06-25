@@ -26,10 +26,11 @@ public class LocalView {
 	private SelectLocallyPresenter selectPresenter;
 	private DeleteLocallyPresenter deletePresenter;
 	
-	public LocalView(MainWindow window, SelectLocallyPresenter selectPresenter, DeleteLocallyPresenter deletePresenter, Object[] titlesArray) {
+	public LocalView(MainWindow window, SelectLocallyPresenter selectPresenter, DeleteLocallyPresenter deletePresenter) {
+		this.selectPresenter = selectPresenter;
+		this.deletePresenter = deletePresenter;
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		initializeTab(tabbedPane);
-		comboBox.setModel(new DefaultComboBoxModel(titlesArray));
 		initializeListeners();
 	}
 
@@ -68,7 +69,7 @@ public class LocalView {
 			  }
 		  });
 	}
-	
+		
   	public void setLocalExtractText(String text) {
   		textPane.setText(text);
   	}
