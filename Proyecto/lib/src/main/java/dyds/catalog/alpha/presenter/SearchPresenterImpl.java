@@ -2,11 +2,11 @@ package dyds.catalog.alpha.presenter;
 
 import dyds.catalog.alpha.model.WikipediaArticle;
 import dyds.catalog.alpha.model.WikipediaConnection;
-import dyds.catalog.alpha.view.MainView;
+import dyds.catalog.alpha.view.OnlineView;
 
 public class SearchPresenterImpl implements SearchPresenter {
 
-	private MainView view;
+	private OnlineView view;
 	private WikipediaConnection wikiConnection;
 	
 	public SearchPresenterImpl(WikipediaConnection wikiConnection) {
@@ -38,13 +38,30 @@ public class SearchPresenterImpl implements SearchPresenter {
   		String searchResultText;
   		searchResultText = "<h1>" + title + "</h1>";
     	searchResultText += extract.replace("\\n", "\n");
-    	searchResultText = MainView.textToHtml(searchResultText, view.getTitleText());
+    	searchResultText = textToHtml(searchResultText, view.getTitleText());
     	view.setExtractText(searchResultText);
   	}
 
 	@Override
-	public void setView(MainView view) {
+	public void setView(OnlineView view) {
 		this.view = view;
 	}
+	
+  	private String textToHtml(String text, String term) {
+
+  		StringBuilder builder = new StringBuilder();
+
+  		builder.append("<font face=\"arial\">");
+
+  		String textWithBold = text
+  				.replace("'", "`") //Replace to avoid SQL errors, we will have to find a workaround..
+  				.replaceAll("(?i)" + term, "<b>" + term +"</b>"); //Highlight the search term in the extract
+
+  		builder.append(textWithBold);
+
+  		builder.append("</font>");
+
+  		return builder.toString();
+  	}
 
 }

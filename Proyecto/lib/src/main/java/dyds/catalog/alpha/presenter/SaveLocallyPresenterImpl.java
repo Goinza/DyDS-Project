@@ -1,16 +1,14 @@
 package dyds.catalog.alpha.presenter;
 
-import java.util.ArrayList;
-
 import dyds.catalog.alpha.model.Model;
 import dyds.catalog.alpha.model.WikipediaArticle;
 import dyds.catalog.alpha.model.WikipediaConnection;
-import dyds.catalog.alpha.view.MainView;
+import dyds.catalog.alpha.view.OnlineView;
 
 public class SaveLocallyPresenterImpl implements SaveLocallyPresenter {
 
 	private Model model;
-	private MainView view;
+	private OnlineView view;
 	private WikipediaConnection wikiConnection;
 	
 	public SaveLocallyPresenterImpl(Model model, WikipediaConnection wikiConnection) {
@@ -25,8 +23,8 @@ public class SaveLocallyPresenterImpl implements SaveLocallyPresenter {
 			String title = lastSearchedArticle.getTitle();
 			String extract = lastSearchedArticle.getExtract();
 			model.saveEntry(title, extract);
-			ArrayList<String> titleList = model.getTitlesInAscendingOrder();
-			view.updateLocalArray(titleList.toArray());  
+			//ArrayList<String> titleList = model.getTitlesInAscendingOrder();
+			//view.updateLocalArray(titleList.toArray());   IMPLEMENT THIS IN A LISTENER?
 			view.throwInfoMessage("Save complete", "The article has been saved successfully");
 		}
 		else {
@@ -35,7 +33,7 @@ public class SaveLocallyPresenterImpl implements SaveLocallyPresenter {
 	}
 
 	@Override
-	public void setView(MainView view) {
+	public void setView(OnlineView view) {
 		this.view = view;
 	}
 

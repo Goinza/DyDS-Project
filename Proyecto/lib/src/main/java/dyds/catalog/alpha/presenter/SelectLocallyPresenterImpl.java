@@ -2,12 +2,12 @@ package dyds.catalog.alpha.presenter;
 
 import dyds.catalog.alpha.model.InvalidTitleException;
 import dyds.catalog.alpha.model.Model;
-import dyds.catalog.alpha.view.MainView;
+import dyds.catalog.alpha.view.LocalView;
 
 public class SelectLocallyPresenterImpl implements SelectLocallyPresenter {
 	
 	Model model;
-	MainView view;
+	LocalView view;
 	
 	public SelectLocallyPresenterImpl(Model model) {
 		this.model = model;
@@ -25,7 +25,7 @@ public class SelectLocallyPresenterImpl implements SelectLocallyPresenter {
 	}
 
 	@Override
-	public void setView(MainView view) {
+	public void setView(LocalView view) {
 		this.view = view;
 	}
 

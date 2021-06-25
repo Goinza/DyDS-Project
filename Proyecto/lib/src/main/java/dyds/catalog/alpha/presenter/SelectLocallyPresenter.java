@@ -1,11 +1,11 @@
 package dyds.catalog.alpha.presenter;
 
-import dyds.catalog.alpha.view.MainView;
+import dyds.catalog.alpha.view.LocalView;
 
 public interface SelectLocallyPresenter {
 
 	public void selectEntry(String title);
 	
-	public void setView(MainView view);
+	public void setView(LocalView view);
 	
 }

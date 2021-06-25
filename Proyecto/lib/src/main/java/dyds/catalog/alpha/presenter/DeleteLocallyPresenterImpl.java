@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import dyds.catalog.alpha.model.InvalidTitleException;
 import dyds.catalog.alpha.model.Model;
-import dyds.catalog.alpha.view.MainView;
+import dyds.catalog.alpha.view.LocalView;
 
 public class DeleteLocallyPresenterImpl implements DeleteLocallyPresenter {
 	
 	Model model;
-	MainView view;
+	LocalView view;
 	
 	public DeleteLocallyPresenterImpl(Model model) {
 		this.model = model;
@@ -31,7 +31,7 @@ public class DeleteLocallyPresenterImpl implements DeleteLocallyPresenter {
 	}
 
 	@Override
-	public void setView(MainView view) {
+	public void setView(LocalView view) {
 		this.view = view;
 	}
 
