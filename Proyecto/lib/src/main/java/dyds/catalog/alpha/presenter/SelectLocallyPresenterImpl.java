@@ -1,19 +1,19 @@
 package dyds.catalog.alpha.presenter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import dyds.catalog.alpha.model.DeleteSuccessListener;
 import dyds.catalog.alpha.model.InvalidTitleException;
-import dyds.catalog.alpha.model.Model;
+import dyds.catalog.alpha.model.LocalModel;
 import dyds.catalog.alpha.model.SaveSuccessListener;
 import dyds.catalog.alpha.view.LocalView;
 
 public class SelectLocallyPresenterImpl implements SelectLocallyPresenter {
 	
-	Model model;
+	LocalModel model;
 	LocalView view;
 	
-	public SelectLocallyPresenterImpl(Model model) {
+	public SelectLocallyPresenterImpl(LocalModel model) {
 		this.model = model;
 		initializeListeners();
 	}
@@ -34,19 +34,25 @@ public class SelectLocallyPresenterImpl implements SelectLocallyPresenter {
 	}
 	
 	private void updateViewTitles() {
-		ArrayList<String> titles = model.getTitlesInAscendingOrder();
+		List<String> titles = model.getTitles();
 		view.updateLocalArray(titles.toArray());
 	}
 
 	@Override
-	public void selectEntry(String title) {
-		try {
-			String extractText = model.getExtract(title);
-			view.setLocalExtractText(extractText);
+	public void selectEntry(Object entry) {
+		if (entry != null) {
+			try {
+				String title = entry.toString();
+				String extractText = model.getExtract(title);
+				view.setLocalExtractText(extractText);
+			}
+			catch (InvalidTitleException e) {
+				view.throwErrorMessage("Error", e.getMessage());
+			}	
 		}
-		catch (InvalidTitleException e) {
-			view.throwErrorMessage("Error", e.getMessage());
-		}
+		else {
+			view.throwInfoMessage("Select result", "There is no article to select");
+		}		
 	}
 
 	@Override

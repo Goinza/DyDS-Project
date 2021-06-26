@@ -18,7 +18,7 @@ public class VideogameSearcher implements WikipediaConnection {
 	
   	private WikipediaSearchAPI searchAPI;
   	private WikipediaPageAPI pageAPI;
-  	private WikipediaArticle lastSearchedArticle = null;
+  	private Article lastSearchedArticle = null;
 	
 	public VideogameSearcher() {
 		Retrofit retrofit = new Retrofit.Builder()
@@ -31,12 +31,12 @@ public class VideogameSearcher implements WikipediaConnection {
 	}
 
 	@Override
-	public WikipediaArticle searchArticle(String searchTerm) {
+	public Article searchArticle(String searchTerm) throws IOException {
 		JsonObject searchResult = getSearchResult(searchTerm);
 		if (searchResult != null) {
 			String title = getSearchTitle(searchResult);
 			String extract = getSearchExtract(searchResult);
-			lastSearchedArticle = new WikipediaArticle(title, extract);
+			lastSearchedArticle = new Article(title, extract);
 		}
 		
 		return lastSearchedArticle;
@@ -57,8 +57,8 @@ public class VideogameSearcher implements WikipediaConnection {
 		try {
 			Response<String> callResponse = searchAPI.searchForTerm(searchTerm + " articletopic:\"video-games\"").execute();
 	        Gson gson = new Gson();
-	        JsonObject jobj = gson.fromJson(callResponse.body(), JsonObject.class);
-	        JsonObject query = jobj.get("query").getAsJsonObject();
+	        JsonObject callResponeJsonObject = gson.fromJson(callResponse.body(), JsonObject.class);
+	        JsonObject query = callResponeJsonObject.get("query").getAsJsonObject();
 	        JsonArray resultArray = query.get("search").getAsJsonArray();
 	        resultIterator = resultArray.iterator();
 		} catch (IOException e1) { 
@@ -72,32 +72,28 @@ public class VideogameSearcher implements WikipediaConnection {
 		return searchResult.get("title").getAsString();
 	}
 	
-	private String getSearchExtract(JsonObject searchResult) {
+	private String getSearchExtract(JsonObject searchResult) throws IOException {
 		String searchResultPageId = searchResult.get("pageid").getAsString();
 		String extract = null;
-		try {
-			boolean foundResult = searchResultPageId != null;
-			if (foundResult) {
-				Response<String> callResponse = pageAPI.getExtractByPageID(searchResultPageId).execute();
-				Gson gson = new Gson();
-		        JsonObject jobj = gson.fromJson(callResponse.body(), JsonObject.class);
-		        JsonObject query = jobj.get("query").getAsJsonObject();
-		        JsonObject pages = query.get("pages").getAsJsonObject();
-		        Set<Map.Entry<String, JsonElement>> pagesSet = pages.entrySet();
-		        Map.Entry<String, JsonElement> first = pagesSet.iterator().next();
-		        JsonObject page = first.getValue().getAsJsonObject();
-		        JsonElement searchResultExtract = page.get("extract");
-		        extract = searchResultExtract.getAsString();
-			}			
-		} catch (IOException e1) { 			
-		  	e1.printStackTrace();
-		}	
+		boolean foundResult = searchResultPageId != null;
+		if (foundResult) {
+			Response<String> callResponse = pageAPI.getExtractByPageID(searchResultPageId).execute();
+			Gson gson = new Gson();
+	        JsonObject callResponeJsonObject = gson.fromJson(callResponse.body(), JsonObject.class);
+	        JsonObject query = callResponeJsonObject.get("query").getAsJsonObject();
+	        JsonObject pages = query.get("pages").getAsJsonObject();
+	        Set<Map.Entry<String, JsonElement>> pagesSet = pages.entrySet();
+	        Map.Entry<String, JsonElement> first = pagesSet.iterator().next();
+	        JsonObject page = first.getValue().getAsJsonObject();
+	        JsonElement searchResultExtract = page.get("extract");
+	        extract = searchResultExtract.getAsString();
+		}
         
         return extract;
 	}
 
 	@Override
-	public WikipediaArticle getLastSearchedArticle() {
+	public Article getLastSearchedArticle() {
 		return lastSearchedArticle;
 	}
 

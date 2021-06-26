@@ -1,19 +1,19 @@
 package dyds.catalog.alpha.presenter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import dyds.catalog.alpha.model.DeleteFailureListener;
 import dyds.catalog.alpha.model.DeleteSuccessListener;
 import dyds.catalog.alpha.model.InvalidTitleException;
-import dyds.catalog.alpha.model.Model;
+import dyds.catalog.alpha.model.LocalModel;
 import dyds.catalog.alpha.view.LocalView;
 
 public class DeleteLocallyPresenterImpl implements DeleteLocallyPresenter {
 	
-	Model model;
+	LocalModel model;
 	LocalView view;
 	
-	public DeleteLocallyPresenterImpl(Model model) {
+	public DeleteLocallyPresenterImpl(LocalModel model) {
 		this.model = model;
 		initializeListeners();
 	}
@@ -29,23 +29,28 @@ public class DeleteLocallyPresenterImpl implements DeleteLocallyPresenter {
 		model.addDeleteFailureListener(new DeleteFailureListener() {
 			@Override
 			public void notifyFailure() {
-				view.throwErrorMessage("Delete failure", "There was an erorr trying to delete the article");
+				view.throwErrorMessage("Delete failure", "There was an error trying to delete the article");
 			}			
 		});
 	}
 
 	@Override
-	public void deleteEntry(String title) {
-		try {
-			model.deleteEntry(title);
-			ArrayList<String> titleList = model.getTitlesInAscendingOrder();
-			view.updateLocalArray(titleList.toArray());
-			view.setLocalExtractText("");
+	public void deleteEntry(Object entry) {
+		if (entry != null) {
+			try {
+				String title = entry.toString();
+				model.deleteEntry(title);
+				List<String> titleList = model.getTitles();
+				view.updateLocalArray(titleList.toArray());
+				view.setLocalExtractText("");
+			}
+			catch (InvalidTitleException e) {
+				view.throwErrorMessage("Error", e.getMessage());
+			}
 		}
-		catch (InvalidTitleException e) {
-			view.throwErrorMessage("Error", e.getMessage());
-		}
-
+		else {
+			view.throwInfoMessage("Delete result", "You need to select an article beforing deleting");	
+		}		
 	}
 
 	@Override

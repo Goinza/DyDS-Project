@@ -3,14 +3,14 @@ package dyds.catalog.alpha.model;
 public class StubWikipediaConnection implements WikipediaConnection {
 
 	@Override
-	public WikipediaArticle searchArticle(String searchTerm) {
-		WikipediaArticle article = new WikipediaArticle("Example title", "Example description");
+	public Article searchArticle(String searchTerm) {
+		Article article = new Article("Example title", "Example description");
 		return article;
 	}
 
 	@Override
-	public WikipediaArticle getLastSearchedArticle() {
-		WikipediaArticle article = new WikipediaArticle("Last searched title", "Last searched description");
+	public Article getLastSearchedArticle() {
+		Article article = new Article("Last searched title", "Last searched description");
 		return article;
 	}
 

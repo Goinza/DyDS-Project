@@ -54,19 +54,16 @@ public class LocalView {
 	
 	private void initializeListeners() {
 		  comboBox.addActionListener(new ActionListener() {
+			  
 			  @Override
 			  public void actionPerformed(ActionEvent actionEvent) {
-				  if(comboBox.getSelectedIndex() > -1) {
-					  selectPresenter.selectEntry(comboBox.getSelectedItem().toString());
-				  }				  
+				  selectPresenter.selectEntry(comboBox.getSelectedItem());				  		  
 			  }
 		  });
 		  deleteButton.addActionListener(new ActionListener() {
 			  @Override
 			  public void actionPerformed(ActionEvent actionEvent) {
-				  if(comboBox.getSelectedIndex() > -1){
-					  deletePresenter.deleteEntry(comboBox.getSelectedItem().toString());
-				  }
+				  deletePresenter.deleteEntry(comboBox.getSelectedItem());
 			  }
 		  });
 	}

@@ -1,11 +1,11 @@
 package dyds.catalog.alpha.model;
 
-public class WikipediaArticle {
+public class Article {
 	
 	private String title;
 	private String extract;
 	
-	public WikipediaArticle(String title, String extract) {
+	public Article(String title, String extract) {
 		this.title = title;
 		this.extract = extract;
 	}

@@ -1,10 +1,13 @@
 package main;
 
 import dyds.catalog.alpha.model.SQLDatabase;
+import dyds.catalog.alpha.model.ServiceModel;
+import dyds.catalog.alpha.model.ServiceModelImpl;
 import dyds.catalog.alpha.model.VideogameSearcher;
 import dyds.catalog.alpha.model.WikipediaConnection;
-
-import dyds.catalog.alpha.model.Model;
+import dyds.catalog.alpha.model.Database;
+import dyds.catalog.alpha.model.LocalModel;
+import dyds.catalog.alpha.model.LocalModelImpl;
 import dyds.catalog.alpha.presenter.DeleteLocallyPresenter;
 import dyds.catalog.alpha.presenter.DeleteLocallyPresenterImpl;
 import dyds.catalog.alpha.presenter.SaveLocallyPresenter;
@@ -20,13 +23,16 @@ import dyds.catalog.alpha.view.OnlineView;
 public class Main {
 
   	public static void main(String[] args) {
-  		Model m = new SQLDatabase();
-  		WikipediaConnection wc = new VideogameSearcher();
+  		Database database = new SQLDatabase();
+  		LocalModel localModel = new LocalModelImpl(database);
   		
-  		SearchPresenter search = new SearchPresenterImpl(wc);
-  		SaveLocallyPresenter save = new SaveLocallyPresenterImpl(m, wc);
-  		SelectLocallyPresenter select = new SelectLocallyPresenterImpl(m);
-  		DeleteLocallyPresenter delete = new DeleteLocallyPresenterImpl(m);  		
+  		WikipediaConnection wikiConnection = new VideogameSearcher();
+  		ServiceModel serviceModel = new ServiceModelImpl(wikiConnection);
+  		
+  		SearchPresenter search = new SearchPresenterImpl(serviceModel);
+  		SaveLocallyPresenter save = new SaveLocallyPresenterImpl(localModel, serviceModel);
+  		SelectLocallyPresenter select = new SelectLocallyPresenterImpl(localModel);
+  		DeleteLocallyPresenter delete = new DeleteLocallyPresenterImpl(localModel);  		
   		
   		MainWindow window = new MainWindow();
   		

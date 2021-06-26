@@ -1,10 +1,10 @@
 package dyds.catalog.alpha.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public interface Model {
+public interface LocalModel {
 		
-	public ArrayList<String> getTitlesInAscendingOrder();
+	public List<String> getTitles();
 	
 	public void saveEntry(String title, String extract);
 	
