@@ -49,11 +49,10 @@ public class TestServiceModel {
 		try {
 			WikipediaConnection wikiConnection = new StubForcedExceptionConnection();
 			ServiceModel serviceModel = new ServiceModelImpl(wikiConnection);
-			Article article = serviceModel.searchArticle("Title");
+			serviceModel.searchArticle("Title");
 			fail("Stub should throw ServiceException");
 		}
-		catch (ServiceException e) {
-			
+		catch (ServiceException e) {			
 		}
 	}
 	
