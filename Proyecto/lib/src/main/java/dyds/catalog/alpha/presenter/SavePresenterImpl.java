@@ -7,15 +7,15 @@ import dyds.catalog.alpha.model.ServiceModel;
 import dyds.catalog.alpha.model.Article;
 import dyds.catalog.alpha.view.OnlineView;
 
-public class SaveLocallyPresenterImpl implements SaveLocallyPresenter {
+public class SavePresenterImpl implements SavePresenter {
 
 	private LocalModel localModel;
 	private OnlineView view;
 	private ServiceModel serviceModel;
 	
-	public SaveLocallyPresenterImpl(LocalModel model, ServiceModel wikiConnection) {
-		this.localModel = model;
-		this.serviceModel = wikiConnection;
+	public SavePresenterImpl(LocalModel localModel, ServiceModel serviceModel) {
+		this.localModel = localModel;
+		this.serviceModel = serviceModel;
 		initializeListeners();
 	}	
 	

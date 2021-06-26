@@ -3,69 +3,66 @@ package dyds.catalog.alpha.presenter;
 import java.util.List;
 
 import dyds.catalog.alpha.model.AccessFailureListener;
+import dyds.catalog.alpha.model.DeleteFailureListener;
 import dyds.catalog.alpha.model.DeleteSuccessListener;
 import dyds.catalog.alpha.model.InvalidTitleException;
 import dyds.catalog.alpha.model.LocalModel;
-import dyds.catalog.alpha.model.SaveSuccessListener;
 import dyds.catalog.alpha.view.LocalView;
 
-public class SelectLocallyPresenterImpl implements SelectLocallyPresenter {
+public class DeletePresenterImpl implements DeletePresenter {
 	
 	LocalModel model;
 	LocalView view;
 	
-	public SelectLocallyPresenterImpl(LocalModel model) {
+	public DeletePresenterImpl(LocalModel model) {
 		this.model = model;
 		initializeListeners();
 	}
 	
 	private void initializeListeners() {
-		model.addSaveSuccessListener(new SaveSuccessListener() {
-			@Override
-			public void notifySuccess() {
-				updateViewTitles();
-			}			
-		});
 		model.addDeleteSuccessListener(new DeleteSuccessListener() {
 			@Override
 			public void notifySuccess() {
-				updateViewTitles();
+				view.throwInfoMessage("Delete complete", "The article has been deleted successfully");
 			}
+			
+		});		
+		model.addDeleteFailureListener(new DeleteFailureListener() {
+			@Override
+			public void notifyFailure() {
+				view.throwErrorMessage("Delete failure", "There was an error trying to delete the article");
+			}			
 		});
 		model.addAccessFailureListener(new AccessFailureListener() {
 			@Override
 			public void notifyFailure() {
-				view.throwErrorMessage("Error", "There was an error trying to update the local list of articles");
+				view.throwErrorMessage("Delete failure", "There was an error trying to delete the article");
 			}
 		});
 	}
-	
-	private void updateViewTitles() {
-		List<String> titles = model.getTitles();
-		view.updateLocalArray(titles.toArray());
-	}
 
 	@Override
-	public void selectEntry(Object entry) {
+	public void deleteEntry(Object entry) {
 		if (entry != null) {
 			try {
 				String title = entry.toString();
-				String extractText = model.getExtract(title);
-				view.setLocalExtractText(extractText);
+				model.deleteEntry(title);
+				List<String> titleList = model.getTitles();
+				view.updateArticles(titleList.toArray());
+				view.setLocalExtractText("");
 			}
 			catch (InvalidTitleException e) {
 				view.throwErrorMessage("Error", e.getMessage());
-			}	
+			}
 		}
 		else {
-			view.throwInfoMessage("Select result", "There is no article to select");
+			view.throwInfoMessage("Delete result", "You need to select an article beforing deleting");	
 		}		
 	}
 
 	@Override
 	public void setView(LocalView view) {
 		this.view = view;
-		updateViewTitles();
 	}
 
 }

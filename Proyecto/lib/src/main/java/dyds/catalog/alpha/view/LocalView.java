@@ -13,20 +13,20 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 
-import dyds.catalog.alpha.presenter.DeleteLocallyPresenter;
-import dyds.catalog.alpha.presenter.SelectLocallyPresenter;
+import dyds.catalog.alpha.presenter.DeletePresenter;
+import dyds.catalog.alpha.presenter.SelectPresenter;
 
 public class LocalView {
 	
 	private JPanel storagePanel;
-	private JComboBox comboBox;
-	private JTextPane textPane;
-	private JButton deleteButton;
+	protected JComboBox titlesComboBox;
+	protected JTextPane extractTextPane;
+	protected JButton deleteButton;
 	
-	private SelectLocallyPresenter selectPresenter;
-	private DeleteLocallyPresenter deletePresenter;
+	private SelectPresenter selectPresenter;
+	private DeletePresenter deletePresenter;
 	
-	public LocalView(MainWindow window, SelectLocallyPresenter selectPresenter, DeleteLocallyPresenter deletePresenter) {
+	public LocalView(MainWindow window, SelectPresenter selectPresenter, DeletePresenter deletePresenter) {
 		this.selectPresenter = selectPresenter;
 		this.deletePresenter = deletePresenter;
 		JTabbedPane tabbedPane = window.getTabbedPane();
@@ -38,14 +38,14 @@ public class LocalView {
 	    storagePanel = new JPanel();
 	    storagePanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
 	    tabbedPane.addTab("Interact with Stored Info", storagePanel);
-	    comboBox = new JComboBox();
-	    storagePanel.add(comboBox, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+	    titlesComboBox = new JComboBox();
+	    storagePanel.add(titlesComboBox, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 	    final JScrollPane scrollPane2 = new JScrollPane();
 	    storagePanel.add(scrollPane2, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-	    textPane = new JTextPane();
-	    textPane.setContentType("text/html");
-	    textPane.setEditable(false);
-	    scrollPane2.setViewportView(textPane);
+	    extractTextPane = new JTextPane();
+	    extractTextPane.setContentType("text/html");
+	    extractTextPane.setEditable(false);
+	    scrollPane2.setViewportView(extractTextPane);
 	    deleteButton = new JButton();
 	    deleteButton.setText("Delete!");
 	    storagePanel.add(deleteButton, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -53,27 +53,27 @@ public class LocalView {
 	}
 	
 	private void initializeListeners() {
-		  comboBox.addActionListener(new ActionListener() {
+		  titlesComboBox.addActionListener(new ActionListener() {
 			  
 			  @Override
 			  public void actionPerformed(ActionEvent actionEvent) {
-				  selectPresenter.selectEntry(comboBox.getSelectedItem());				  		  
+				  selectPresenter.selectEntry(titlesComboBox.getSelectedItem());				  		  
 			  }
 		  });
 		  deleteButton.addActionListener(new ActionListener() {
 			  @Override
 			  public void actionPerformed(ActionEvent actionEvent) {
-				  deletePresenter.deleteEntry(comboBox.getSelectedItem());
+				  deletePresenter.deleteEntry(titlesComboBox.getSelectedItem());
 			  }
 		  });
 	}
 		
   	public void setLocalExtractText(String text) {
-  		textPane.setText(text);
+  		extractTextPane.setText(text);
   	}
   	
-  	public void updateLocalArray(Object[] titlesArray) {
-  		comboBox.setModel(new DefaultComboBoxModel(titlesArray));
+  	public void updateArticles(Object[] titles) {
+  		titlesComboBox.setModel(new DefaultComboBoxModel(titles));
   	}
   	
   	public void throwErrorMessage(String title, String message) {

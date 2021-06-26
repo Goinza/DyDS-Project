@@ -2,7 +2,7 @@ package dyds.catalog.alpha.presenter;
 
 import dyds.catalog.alpha.view.LocalView;
 
-public interface DeleteLocallyPresenter {
+public interface DeletePresenter {
 
 	public void deleteEntry(Object entry);
 	

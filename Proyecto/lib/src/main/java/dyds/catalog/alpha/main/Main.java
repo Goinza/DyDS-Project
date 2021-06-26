@@ -1,4 +1,4 @@
-package main;
+package dyds.catalog.alpha.main;
 
 import dyds.catalog.alpha.model.SQLDatabase;
 import dyds.catalog.alpha.model.ServiceModel;
@@ -8,14 +8,14 @@ import dyds.catalog.alpha.model.WikipediaConnection;
 import dyds.catalog.alpha.model.Database;
 import dyds.catalog.alpha.model.LocalModel;
 import dyds.catalog.alpha.model.LocalModelImpl;
-import dyds.catalog.alpha.presenter.DeleteLocallyPresenter;
-import dyds.catalog.alpha.presenter.DeleteLocallyPresenterImpl;
-import dyds.catalog.alpha.presenter.SaveLocallyPresenter;
-import dyds.catalog.alpha.presenter.SaveLocallyPresenterImpl;
+import dyds.catalog.alpha.presenter.DeletePresenter;
+import dyds.catalog.alpha.presenter.DeletePresenterImpl;
+import dyds.catalog.alpha.presenter.SavePresenter;
+import dyds.catalog.alpha.presenter.SavePresenterImpl;
 import dyds.catalog.alpha.presenter.SearchPresenter;
 import dyds.catalog.alpha.presenter.SearchPresenterImpl;
-import dyds.catalog.alpha.presenter.SelectLocallyPresenter;
-import dyds.catalog.alpha.presenter.SelectLocallyPresenterImpl;
+import dyds.catalog.alpha.presenter.SelectPresenter;
+import dyds.catalog.alpha.presenter.SelectPresenterImpl;
 import dyds.catalog.alpha.view.LocalView;
 import dyds.catalog.alpha.view.MainWindow;
 import dyds.catalog.alpha.view.OnlineView;
@@ -30,9 +30,9 @@ public class Main {
   		ServiceModel serviceModel = new ServiceModelImpl(wikiConnection);
   		
   		SearchPresenter search = new SearchPresenterImpl(serviceModel);
-  		SaveLocallyPresenter save = new SaveLocallyPresenterImpl(localModel, serviceModel);
-  		SelectLocallyPresenter select = new SelectLocallyPresenterImpl(localModel);
-  		DeleteLocallyPresenter delete = new DeleteLocallyPresenterImpl(localModel);  		
+  		SavePresenter save = new SavePresenterImpl(localModel, serviceModel);
+  		SelectPresenter select = new SelectPresenterImpl(localModel);
+  		DeletePresenter delete = new DeletePresenterImpl(localModel);  		
   		
   		MainWindow window = new MainWindow();
   		

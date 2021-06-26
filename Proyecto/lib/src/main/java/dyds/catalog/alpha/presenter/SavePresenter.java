@@ -2,7 +2,7 @@ package dyds.catalog.alpha.presenter;
 
 import dyds.catalog.alpha.view.OnlineView;
 
-public interface SaveLocallyPresenter {
+public interface SavePresenter {
 
 	public void saveLastSearchedArticle();
 	
