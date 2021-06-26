@@ -10,6 +10,7 @@ public class LocalModelImpl implements LocalModel {
 	private List<SaveFailureListener> saveFailureListeners;
 	private List<DeleteSuccessListener> deleteSuccessListeners;
 	private List<DeleteFailureListener> deleteFailureListeners;
+	private List<AccessFailureListener> accessFailureListeners;
 	
 	public LocalModelImpl(Database database) {
 		this.database = database;
@@ -17,6 +18,7 @@ public class LocalModelImpl implements LocalModel {
 		saveFailureListeners = new LinkedList<SaveFailureListener>();
 		deleteSuccessListeners = new LinkedList<DeleteSuccessListener>();
 		deleteFailureListeners = new LinkedList<DeleteFailureListener>();
+		accessFailureListeners = new LinkedList<AccessFailureListener>();
 	}
 
 	@Override
@@ -26,7 +28,7 @@ public class LocalModelImpl implements LocalModel {
 			titles = database.getTitles();			
 		}
 		catch (DatabaseException e) {
-			//Notify listener
+			notifyAccessFailure();
 		}
 		return titles;
 	}
@@ -49,7 +51,7 @@ public class LocalModelImpl implements LocalModel {
 			extract = database.getExtract(title);
 		}
 		catch (DatabaseException e) {
-			//Notify listener
+			notifyAccessFailure();
 		}		
 		return extract; 
 	}
@@ -86,6 +88,11 @@ public class LocalModelImpl implements LocalModel {
 		deleteFailureListeners.add(listener);
 	}
 	
+	@Override
+	public void addAccessFailureListener(AccessFailureListener listener) {
+		accessFailureListeners.add(listener);
+	}
+	
 	private void notifySaveSuccess() {
 		for (SaveSuccessListener listener : saveSuccessListeners) {
     		listener.notifySuccess();
@@ -106,6 +113,12 @@ public class LocalModelImpl implements LocalModel {
 	
 	private void notifyDeleteFailure() {
 		for (DeleteFailureListener listener : deleteFailureListeners) {
+    		listener.notifyFailure();
+    	}
+	}
+	
+	private void notifyAccessFailure() {
+		for (AccessFailureListener listener : accessFailureListeners) {
     		listener.notifyFailure();
     	}
 	}

@@ -2,6 +2,7 @@ package dyds.catalog.alpha.presenter;
 
 import java.util.List;
 
+import dyds.catalog.alpha.model.AccessFailureListener;
 import dyds.catalog.alpha.model.DeleteSuccessListener;
 import dyds.catalog.alpha.model.InvalidTitleException;
 import dyds.catalog.alpha.model.LocalModel;
@@ -29,6 +30,12 @@ public class SelectLocallyPresenterImpl implements SelectLocallyPresenter {
 			@Override
 			public void notifySuccess() {
 				updateViewTitles();
+			}
+		});
+		model.addAccessFailureListener(new AccessFailureListener() {
+			@Override
+			public void notifyFailure() {
+				view.throwErrorMessage("Error", "There was an error trying to update the local list of articles");
 			}
 		});
 	}

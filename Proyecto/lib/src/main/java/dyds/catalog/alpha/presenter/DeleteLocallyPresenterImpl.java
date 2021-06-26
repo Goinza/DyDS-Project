@@ -2,6 +2,7 @@ package dyds.catalog.alpha.presenter;
 
 import java.util.List;
 
+import dyds.catalog.alpha.model.AccessFailureListener;
 import dyds.catalog.alpha.model.DeleteFailureListener;
 import dyds.catalog.alpha.model.DeleteSuccessListener;
 import dyds.catalog.alpha.model.InvalidTitleException;
@@ -31,6 +32,12 @@ public class DeleteLocallyPresenterImpl implements DeleteLocallyPresenter {
 			public void notifyFailure() {
 				view.throwErrorMessage("Delete failure", "There was an error trying to delete the article");
 			}			
+		});
+		model.addAccessFailureListener(new AccessFailureListener() {
+			@Override
+			public void notifyFailure() {
+				view.throwErrorMessage("Delete failure", "There was an error trying to delete the article");
+			}
 		});
 	}
 

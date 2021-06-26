@@ -19,4 +19,6 @@ public interface LocalModel {
 	public void addDeleteSuccessListener(DeleteSuccessListener listener);
 	
 	public void addDeleteFailureListener(DeleteFailureListener listener);
+	
+	public void addAccessFailureListener(AccessFailureListener listener);
 }

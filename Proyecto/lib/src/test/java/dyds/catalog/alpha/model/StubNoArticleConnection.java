@@ -1,6 +1,6 @@
 package dyds.catalog.alpha.model;
 
-public class StubNoArticle implements WikipediaConnection {
+public class StubNoArticleConnection implements WikipediaConnection {
 
 	@Override
 	public Article searchArticle(String searchTerm) {

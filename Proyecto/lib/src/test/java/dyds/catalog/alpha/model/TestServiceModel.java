@@ -5,13 +5,14 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-public class TestModel {
+public class TestServiceModel {
 	
 	@Test
 	public void testSearchArticle() {
 		WikipediaConnection wikiConnection = new StubWikipediaConnection();
+		ServiceModel serviceModel = new ServiceModelImpl(wikiConnection);
 		try {
-			Article article = wikiConnection.searchArticle("Example title");
+			Article article = serviceModel.searchArticle("Example title");
 			String expectedTitle = "Example title";
 			String expectedDescription = "Example description";
 			if (article!=null) {
@@ -30,17 +31,37 @@ public class TestModel {
 	
 	@Test
 	public void testNullSearchArticle() {
-		WikipediaConnection wikiConnection = new StubNoArticle();
-		Article article = wikiConnection.searchArticle("Title that does not exists");
-		if (article != null) {
-			fail("The article should be null");
+		try {
+			WikipediaConnection wikiConnection = new StubNoArticleConnection();
+			ServiceModel serviceModel = new ServiceModelImpl(wikiConnection);
+			Article article = serviceModel.searchArticle("Title that does not exists");
+			if (article != null) {
+				fail("The article should be null");
+			}
+		}
+		catch (ServiceException e) {
+			fail();
+		}
+	}
+	
+	@Test
+	public void testExceptionSearchArticle() {
+		try {
+			WikipediaConnection wikiConnection = new StubForcedExceptionConnection();
+			ServiceModel serviceModel = new ServiceModelImpl(wikiConnection);
+			Article article = serviceModel.searchArticle("Title");
+			fail("Stub should throw ServiceException");
+		}
+		catch (ServiceException e) {
+			
 		}
 	}
 	
 	@Test
 	public void testGetLastArticle() {
 		WikipediaConnection wikiConnection = new StubWikipediaConnection();
-		Article article = wikiConnection.getLastSearchedArticle();
+		ServiceModel serviceModel = new ServiceModelImpl(wikiConnection);
+		Article article = serviceModel.getLastSearchedArticle();
 		String expectedTitle = "Last searched title";
 		String expectedDescription = "Last searched description";
 		if (article!=null) {
@@ -54,8 +75,9 @@ public class TestModel {
 	
 	@Test
 	public void testNullLastArticle() {
-		WikipediaConnection wikiConnection = new StubNoArticle();
-		Article article = wikiConnection.getLastSearchedArticle();
+		WikipediaConnection wikiConnection = new StubNoArticleConnection();
+		ServiceModel serviceModel = new ServiceModelImpl(wikiConnection);
+		Article article = serviceModel.getLastSearchedArticle();
 		if (article != null) {
 			fail("The article should be null");
 		}
