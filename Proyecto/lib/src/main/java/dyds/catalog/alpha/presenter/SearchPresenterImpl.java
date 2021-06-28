@@ -53,7 +53,6 @@ public class SearchPresenterImpl implements SearchPresenter {
   		String searchResultText;
   		searchResultText = "<h1>" + title + "</h1>";
     	searchResultText += extract.replace("\\n", "\n");
-    	searchResultText = textToHtml(searchResultText, view.getTitleText());
     	view.setExtractText(searchResultText);
   	}
 
@@ -61,14 +60,5 @@ public class SearchPresenterImpl implements SearchPresenter {
 	public void setView(OnlineView view) {
 		this.view = view;
 	}
-	
-  	private String textToHtml(String text, String term) {
-  		StringBuilder builder = new StringBuilder();
-  		builder.append("<font face=\"arial\">");
-  		builder.append(text);
-  		builder.append("</font>");
-
-  		return builder.toString();
-  	}
 
 }

@@ -1,6 +1,7 @@
 package dyds.catalog.alpha.main;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Before;
@@ -30,8 +31,7 @@ import dyds.catalog.alpha.view.TestOnlineView;
 public class TestIntegration {
 	
 	private TestOnlineView onlineView;
-	private TestLocalView localView;
-	
+	private TestLocalView localView;	
 	
 	@Before
 	public void setup() {
@@ -92,9 +92,16 @@ public class TestIntegration {
 				+ "  </body>\n"
 				+ "</html>\n";
 		onlineView.saveLastSearchedArticle();
-		localView.selectArticle(0);
-		String actualExtract = localView.getExtractText();
-		assertEquals(expectedExtract, actualExtract);
+		boolean found = false;
+		int count = localView.getTitlesCount();
+		int i = 0;
+		while (i<count && !found) {
+			localView.selectArticle(i);
+			String actualExtract = localView.getExtractText();
+			found = expectedExtract.equals(actualExtract);		
+			i++;
+		}
+		assertTrue(found);
 	}
 	
 	@Test
